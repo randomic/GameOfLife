@@ -1,3 +1,6 @@
+# VS Code files
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -41,6 +44,7 @@ htmlcov/
 .coverage.*
 .cache
 nosetests.xml
+.noseids
 coverage.xml
 *,cover
 .hypothesis/
@@ -124,7 +128,7 @@ Thumbs.db
 ehthumbs.db
 
 # Folder config file
-Desktop.ini
+desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
