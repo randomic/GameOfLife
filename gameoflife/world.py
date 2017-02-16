@@ -22,7 +22,7 @@ Example:
         [[0, 1, 0], [0, 1, 0], [0, 1, 0]]
 
 """
-import copy
+import numpy as np
 
 
 class World(object):
@@ -53,8 +53,7 @@ class World(object):
                 'dead' cells.
 
         """
-        self.state = copy.deepcopy(initial_state)
-        self.size = (len(self.state), len(self.state[0]))
+        self.state = np.array(initial_state)
         self.wrap = wrap_boundaries
 
     def simulate(self, n_steps):
@@ -90,10 +89,10 @@ class World(object):
             The next state of the simulation after applying the rules.
 
         """
-        new_state = copy.deepcopy(self.state)
+        new_state = self.state.copy()
 
-        for row in range(self.size[0]):
-            for column in range(self.size[1]):
+        for row in range(self.state.shape[0]):
+            for column in range(self.state.shape[1]):
                 n_count = self.count_neighbours(row, column)
                 if n_count < 2:
                     new_state[row][column] = 0
@@ -136,26 +135,17 @@ class World(object):
             cells.
 
         """
-        region = [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
-        ]
-        for row_offset in range(-1, 2):
-            for column_offset in range(-1, 2):
-                n_row = row + row_offset
-                n_column = column + column_offset
-                if self.wrap:
-                    if n_row == self.size[0]:
-                        n_row = 0
-                    if n_column == self.size[1]:
-                        n_column = 0
-                else:
-                    if (n_row in (-1, self.size[0]) or
-                            n_column in (-1, self.size[1])):
-                        region[row_offset + 1][column_offset + 1] = 0
-                        continue
-                region[row_offset + 1][column_offset + 1] = int(
-                    self.state[n_row][n_column]
-                )
-        return region
+        em_state = np.zeros((self.state.shape[0] + 2,
+                             self.state.shape[1] + 2))
+        em_state[1:-1, 1:-1] = self.state           # Set middle of big array
+
+        if self.wrap:
+            em_state[0, 1:-1] = self.state[-1]       # Top edge
+            em_state[-1, 1:-1] = self.state[0]     # Bottom edge
+            em_state[1:-1, 0] = self.state[:, -1]    # Left edge
+            em_state[1:-1, -1] = self.state[:, 0]  # Right edge
+            em_state[0, 0] = self.state[-1, -1]     # Top-left corner
+            em_state[0, -1] = self.state[-1, 0]     # Top-right corner
+            em_state[-1, 0] = self.state[0, -1]     # Bottom-left corner
+            em_state[-1, -1] = self.state[0, 0]     # Bottom-right corner
+        return em_state[row:row + 3, column:column + 3]
