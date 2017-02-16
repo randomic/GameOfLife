@@ -176,3 +176,43 @@ class TestWorld(unittest.TestCase):
         ]
         test_world = World(init_state, True)
         self.assertTrue(np.array_equal(init_state, test_world.simulate(15)))
+
+    def test_embed_state(self):
+        """State should be surrounded by dead cells.
+
+        """
+        init_state = np.array([
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 0, 0]
+        ])
+        embed_state = [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ]
+        test_world = World(init_state)
+        self.assertTrue(np.array_equal(embed_state,
+                                       test_world.embed_state(init_state)))
+
+    def test_embed_state_wrap(self):
+        """State should be surrounded by dead cells.
+
+        """
+        init_state = np.array([
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 0, 0]
+        ])
+        embed_state = [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ]
+        test_world = World(init_state, True)
+        self.assertTrue(np.array_equal(embed_state,
+                                       test_world.embed_state(init_state)))

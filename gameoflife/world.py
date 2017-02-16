@@ -53,8 +53,8 @@ class World(object):
                 'dead' cells.
 
         """
-        self.state = np.array(initial_state)
         self.wrap = wrap_boundaries
+        self.state = np.array(initial_state, dtype='int8')
 
     def simulate(self, n_steps):
         """Evolve the world n_steps times and return the final state.
@@ -89,11 +89,14 @@ class World(object):
             The next state of the simulation after applying the rules.
 
         """
-        new_state = self.state.copy()
+        em_state = self.embed_state(self.state)
+        new_state = em_state.copy()
 
-        for row in range(self.state.shape[0]):
-            for column in range(self.state.shape[1]):
-                n_count = self.count_neighbours(row, column)
+        for row in range(1, em_state.shape[0] - 1):
+            for column in range(1, em_state.shape[1] - 1):
+                n_count = np.sum(em_state[row - 1:row + 2,
+                                          column - 1:column + 2])
+                n_count -= em_state[row][column]  # Do not count original cell
                 if n_count < 2:
                     new_state[row][column] = 0
                 elif n_count > 3:
@@ -101,51 +104,29 @@ class World(object):
                 elif n_count == 3:
                     new_state[row][column] = 1
 
-        return new_state
+        return new_state[1:-1, 1:-1]
 
-    def count_neighbours(self, row, column):
-        """Return the number of living neighbours to (row, column).
+    def embed_state(self, state):
+        """Return state embeded in a bigger array.
 
-        Args:
-            row: The index of the row in which the cell of interest lies.
-            column: The index of the column in which the cell of interest lies.
-
-        Returns:
-            The total number of living cells out of the 8 adjacent cells.
+        Note:
+            For a non-wrapping world the state will have a border of dead cells
+            and for a wrapping world the edges of the state will be wrapped
+            around.
 
         """
-        region = self.get_region(row, column)
-        n_count = 0
-        for r_row in region:
-            for cell in r_row:
-                n_count += cell
-
-        n_count -= self.state[row][column]  # Do not count original cell
-        return n_count
-
-    def get_region(self, row, column):
-        """Return a 3x3 subsection of the world centred at (row, column).
-
-        Args:
-            row: The index of the row in which the centre cell lies.
-            column: The index of the column in which the centre cell lies.
-
-        Returns:
-            A 3x3 list of lists containing the centre cell and its 8 adjacent
-            cells.
-
-        """
-        em_state = np.zeros((self.state.shape[0] + 2,
-                             self.state.shape[1] + 2))
-        em_state[1:-1, 1:-1] = self.state           # Set middle of big array
+        em_state = np.zeros((state.shape[0] + 2,
+                             state.shape[1] + 2), dtype='int8')
+        em_state[1:-1, 1:-1] = state           # Set middle of big array
 
         if self.wrap:
-            em_state[0, 1:-1] = self.state[-1]       # Top edge
-            em_state[-1, 1:-1] = self.state[0]     # Bottom edge
-            em_state[1:-1, 0] = self.state[:, -1]    # Left edge
-            em_state[1:-1, -1] = self.state[:, 0]  # Right edge
-            em_state[0, 0] = self.state[-1, -1]     # Top-left corner
-            em_state[0, -1] = self.state[-1, 0]     # Top-right corner
-            em_state[-1, 0] = self.state[0, -1]     # Bottom-left corner
-            em_state[-1, -1] = self.state[0, 0]     # Bottom-right corner
-        return em_state[row:row + 3, column:column + 3]
+            em_state[0, 1:-1] = state[-1]       # Top edge
+            em_state[-1, 1:-1] = state[0]     # Bottom edge
+            em_state[1:-1, 0] = state[:, -1]    # Left edge
+            em_state[1:-1, -1] = state[:, 0]  # Right edge
+            em_state[0, 0] = state[-1, -1]     # Top-left corner
+            em_state[0, -1] = state[-1, 0]     # Top-right corner
+            em_state[-1, 0] = state[0, -1]     # Bottom-left corner
+            em_state[-1, -1] = state[0, 0]     # Bottom-right corner
+
+        return em_state
