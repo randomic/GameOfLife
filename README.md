@@ -1,13 +1,35 @@
+# Game of Life #
+
+## Libraries ##
+
+This branch of the project uses arrays from the `numpy` library to store the
+state of the game. It also uses the `matplotlib` library to make an animated
+demonstration of a Gosper Glider Gun.
+
+Install the dependencies with `pip`:
+`pip install -r requirements.txt`
+
+View the animated demonstration with:
+`python main.py`
+
 ## Task ##
 
-Your task is to implement the rules of Conway's Game of Life as explained in the document statement. You can use the code skeleton provided here as a starting point. In that case, implement the `evolve` method in `Life.py`. Feel free to make changes to the code that help you capture all the rules of the game. You can add more tests to `testlife.py` to verify the correctness of your code.
+My task was to implement the rules of Conway's Game of Life as explained in the
+document statement.
 
+## My approach ##
 
-## Prerequisites ##
-* Your favorite text editor
-* Install [nosetests](http://nose.readthedocs.io/en/latest/)
+The document which accompanied this task contained 6 scenarios describing the
+rules of Conway's game of life. The first and fifth of these scenarios were
+implemented as a unit test case in the project skeleton. This inspired me to
+add test cases for the other 4 scenarios and apply a test-driven approach to
+solving the problem.
 
-Alternatively, you could try one of these [python IDEs](https://wiki.python.org/moin/IntegratedDevelopmentEnvironments)
+## World borders ##
 
-## How to run the tests ##
-In a command line, navigate to this directory and just run `nosetests -v`
+The expected behaviour for cells at the edges or corners of a Game of Life
+world was not specified in the document so I added a boolean option to the
+World class which would allow the user to switch between two different types of
+border behaviour. Namely whether a cell would be considered to have no
+neighbours outside of the world or whether the borders would wrap around to
+create a closed world.
