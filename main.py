@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -31,19 +30,18 @@ def main():
     ], False)
 
     fig = plt.figure()
-    im = plt.imshow(world.state, cmap='Greys')
+    img = plt.imshow(world.state)
 
     def update(data):
-        im.set_data(data)
-        return im
+        img.set_data(data)
+        return img
 
     def data_gen():
         while True:
             yield world.evolve()
 
-    animation.FuncAnimation(fig, update, data_gen, interval=50)
+    ani = animation.FuncAnimation(fig, update, data_gen, interval=100)
     plt.show()
-
 
 
 if __name__ == '__main__':
