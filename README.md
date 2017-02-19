@@ -46,3 +46,12 @@ each dimension.
 
 The neighbours of a cell can then be counted by summing the 3x3 sub-array
 centred on that cell and finally subtracting the value of the cell in question.
+
+## Further development ##
+
+* It is possible to vectorise the computation of neighbours and the updating of
+    the game state with numpy arrays. This will eliminate nested loops in the
+    code. Doing so should significantly improve the performance.
+* The rules of Conway's Game of Life are just 1 out of many possible rules for
+    this kind of cellular automaton. It might be interesting to allow rules to
+    be specified.
