@@ -1,8 +1,8 @@
 """world module for Conway's Game of Life exercise.
 
-This module contains the `World` class which describes a 2 dimensional array
+This module contains the World class which describes a 2 dimensional array
 of cells in either a living or dead state. The cells follow the rules of
-Conway's Game of Life. The `World` can be initialised with wrap_boundries=True
+Conway's Game of Life. The World can be initialised with wrap_boundries=True
 to create a 'closed' world in which the bottom wraps to the top and the right
 wraps to the left.
 
@@ -28,28 +28,28 @@ import copy
 class World(object):
     """2 Dimensional world for Conway's Game of Life.
 
-    Stores the state of the `World` in a `list` which will be updated whenever
-    the `evolve` method is called.
+    Stores the state of the World in a list which will be updated whenever
+    the evolve method is called.
 
     Attributes:
         logger: Logger named after this module.
-        size (`tuple`): Contains the size of the `World` as (rows, columns).
-        state (`list` of `list`): Contains the current state of the `World`.
-        wrap (`bool`): Whether or not the edges of the `World` 'wrap around'.
+        size (tuple): Contains the size of the World as (rows, columns).
+        state (list of list): Contains the current state of the World.
+        wrap (bool): Whether or not the edges of the World 'wrap around'.
 
     """
     def __init__(self, initial_state, wrap_boundaries=False):
-        """Initialise the world from `initial_state`.
+        """Initialise the world from initial_state.
 
         Take the initial_state argument and validate it,  while also setting
-        the `size` attribute.
+        the size attribute.
 
         Args:
-            initial_state (`list` of `list`): Describing the initial state of
-                the `World`.
-            wrap_boundaries (`bool`): If `True` bottom of the `World` will wrap
-                to the top and the right edge will wrap to the left. If `False`
-                the `World` will act as though it has a border of permanently
+            initial_state (list of list): Describing the initial state of
+                the World.
+            wrap_boundaries (bool): If True bottom of the World will wrap
+                to the top and the right edge will wrap to the left. If False
+                the World will act as though it has a border of permanently
                 'dead' cells.
 
         """
@@ -81,10 +81,10 @@ class World(object):
         return self.state
 
     def step_cells(self):
-        """Apply the rules of Game of Life to each cell in the `World`.
+        """Apply the rules of Game of Life to each cell in the World.
 
         Note:
-            Only returns the new state, does not update `state`.
+            Only returns the new state, does not update state.
 
         Returns:
             The next state of the simulation after applying the rules.
