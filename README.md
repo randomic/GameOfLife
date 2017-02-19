@@ -42,3 +42,12 @@ edges or in the corners the method depends on the boundary wrapping setting:
 * For wrapping borders a -1 index is used to access the last element of a list
     which causes a wrap around. An index which is past the end of the list is
     set to 0, this causes the wrapping in the other direction.
+
+## Further development ##
+
+* It is possible to develop a way of visualising the Game of Life using only
+    standard libraries. A renderer should be relatively simple to make with
+    tkinter.
+* The rules of Conway's Game of Life are just 1 out of many possible rules for
+    this kind of cellular automaton. It might be interesting to allow rules to
+    be specified.
