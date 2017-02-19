@@ -147,8 +147,8 @@ class TestWorld(unittest.TestCase):
         """Oscillator should return initial state after evolving 15 times.
 
         Note:
-            Same oscillator as `test_simulate` but offset into a corner and
-            `World` boundary wrapping switched on.
+            Same oscillator as test_simulate but offset into a corner and
+            World boundary wrapping switched on.
 
         """
         init_state = [
