@@ -28,3 +28,17 @@ World class which would allow the user to switch between two different types of
 border behaviour. Namely whether a cell would be considered to have no
 neighbours outside of the world or whether the borders would wrap around to
 create a closed world.
+
+## Counting neighbours ##
+
+In order to count the number of neighbours a given cell has a 3x3 sub-section
+of the game state centred on that cell is generated. For cells not on the edges
+of the world this is just a small section of the game state. For cells on the
+edges or in the corners the method depends on the boundary wrapping setting:
+
+* For non-wrapping borders any 'neighbour' lying outside of the game state is
+    not counted towards the number of neighbours. This is whenever a cell with
+    either a -1 or out of range index is looked for.
+* For wrapping borders a -1 index is used to access the last element of a list
+    which causes a wrap around. An index which is past the end of the list is
+    set to 0, this causes the wrapping in the other direction.
